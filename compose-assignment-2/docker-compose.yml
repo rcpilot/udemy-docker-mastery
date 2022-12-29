@@ -1,1 +1,30 @@
 # create your drupal and postgres config here, based off the last assignment
+services:
+
+  drupal:
+    build: .
+    ports: 
+      - 8080:80
+    volumes:
+      - drupal-modules:/var/www/html/modules
+      - drupal-profiles:/var/www/html/profiles       
+      - drupal-sites:/var/www/html/sites      
+      - drupal-themes:/var/www/html/themes
+
+  mariadb:
+    image: mariadb:10.10
+    restart: always
+    environment:
+      - MARIADB_DATABASE=drupal
+      - MARIADB_USER=user
+      - MARIADB_PASSWORD=password
+      - MARIADB_RANDOM_ROOT_PASSWORD=true
+    volumes:
+      - drupal-data:/var/lib/mysql
+
+volumes:
+  drupal-modules:
+  drupal-profiles:
+  drupal-sites:
+  drupal-themes:
+  drupal-data:
